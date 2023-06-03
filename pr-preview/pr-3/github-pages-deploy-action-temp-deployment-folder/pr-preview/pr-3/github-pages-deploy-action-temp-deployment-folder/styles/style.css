@@ -123,14 +123,11 @@ content {
 }
 
 .fancy-text {
-    font-family: 'DT Getai Grotesk Display', sans-serif; 
     font-size: 1rem;
     text-align: center;
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.5rem;
+    display: block;
     padding-block-end: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 
