@@ -27,38 +27,109 @@ let currentStep = -1
 
 
 const hyperleafletCodes = [
-`<div id="map"></div>`,
-`<div id="map"
-data-zoom="5">
+	`<div id="map">
+</div>`,
+	`<div id="map"
+ data-zoom="5">
 </div>
 `,
-`<div id="map"
-data-zoom="5"
-data-center="39.73, 39.99">
-</div>
-`,
-`
-<div id="map"
+	`<div id="map"
  data-zoom="5"
- data-center="39.73, 39.99">
+ data-center="[39.73, 39.99]">
+</div>
+`,
+	`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
   <div
-    data-tile="EsriWorldImagery"
-  ></div>
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+`,
+	`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"></span>
+</div>
+`,
+	`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[35.99,41.73]"></span>
+</div>
+`,
+	`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[35.99,41.73]"></span>
+</div>
+`,
+	`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"
+  data-popup="<h3>Trabzon</h3>" data-tooltip="1232"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[35.99,41.73]"></span>
 </div>
 `
 ]
 
 let prevActions = []
-const esriWorldImageryTile =  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+const esriWorldImageryTile = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
-
+const layerControl = L.control.layers({ "EsriWorldImagery": esriWorldImageryTile })
+const point1 = L.marker([39.73, 39.99])
+const point2 = L.marker([41.73, 35.99])
+point1.bindPopup("popupContent")
 
 const nextActions = [
 	() => { return () => { } },
 	() => { map.setZoom(5); return () => map.setZoom(0) },
 	() => { map.setView([39.73, 39.99]); return () => map.setView([0, 0]) },
-	() => {esriWorldImageryTile.addTo(map); return () => map.removeLayer(esriWorldImageryTile)  }
+	() => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
+	() => { point1.addTo(map); return () => { map.removeLayer(point1) } },
+	() => { point2.addTo(map); return () => { map.removeLayer(point2) } },
 ]
 
 
