@@ -142,11 +142,6 @@ content {
     font-weight: 900;
 }
 
-.fancy-text__icon {
-    width: 64px;
-    aspect-ratio: 1;
-}
-
 
 .import-code>pre {
     padding: 1rem;
@@ -189,7 +184,23 @@ content {
     background-color: #2e3440ff;
 }
 
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 12px
+    }
 
+    .hyperleaflet-sample__screen {
+        flex-direction: column;
+    }
+
+    .hyperleaflet-sample__code {
+        order: 2
+    }
+
+    hyperleaflet-sample__map {
+        order: 1
+    }
+}
 
 
 
@@ -250,30 +261,4 @@ footer {
     transform: scale(1.02);
 
 
-}
-
-
-@media screen and (max-width: 768px) {
-    html {
-        font-size: 12px
-    }
-
-    .hyperleaflet-sample__screen {
-        flex-direction: column;
-    }
-
-    .fancy-text {
-        font-size: 2rem;
-    }
-    .fancy-text__icon {
-        width: 32px;
-    }
-
-    .hyperleaflet-sample__code {
-        order: 2
-    }
-
-    hyperleaflet-sample__map {
-        order: 1
-    }
 }
