@@ -12,11 +12,11 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const importCode =
 	`<!-- import leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet/dist/leaflet.js">
 
 <!-- import hyperleaflet -->
-<script defer src="https://www.unpkg.com/hyperleaflet@0.2.3"></script>
+<script defer src="https://www.unpkg.com/hyperleaflet"></script>
 `
 
 
@@ -27,10 +27,19 @@ let currentStep = -1
 
 
 const hyperleafletCodes = [
-	`<div id="map">
-</div>`,
+	`/*style your map container like: */
+<style>
+#map {
+ width: 100%
+ height: 500px
+}
+</style>
+
+<div id="map">
+</div>
+`,
 	`<div id="map"
- data-zoom="5">
+ data-zoom="4">
 </div>
 `,
 	`<div id="map"
@@ -111,6 +120,42 @@ data-hyperleaflet-source>
   data-geometry-type="Point"
   data-geometry="[35.99,41.73]"></span>
 </div>
+`,
+`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"
+  data-popup="<h3>Trabzon</h3>" data-tooltip="1232"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[35.99,41.73]"></span>
+</div>
+`,
+`<div id="map"
+ data-zoom="5"
+ data-center="[39.73, 39.99]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[39.99,39.73]"
+  data-popup="<h3>Trabzon</h3>" data-tooltip="1232"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[35.99,41.73]"></span>
+</div>
 `
 ]
 
@@ -119,17 +164,32 @@ const esriWorldImageryTile = L.tileLayer('https://server.arcgisonline.com/ArcGIS
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 const layerControl = L.control.layers({ "EsriWorldImagery": esriWorldImageryTile })
-const point1 = L.marker([39.73, 39.99])
-const point2 = L.marker([41.73, 35.99])
-point1.bindPopup("popupContent")
+const point1 = L.marker([25.775, -80.193])
+const point2 = L.marker([18.465, -66.117])
+const point3 = L.marker([32.317, -64.737])
+const polygon = L.polygon([[[25.775, -80.193],[18.465, -66.117],[32.317, -64.737],[25.775, -80.193]]])
+
+function bindPopups() {
+	point1.bindPopup("<h3>Miami</h3>")
+	point2.bindPopup("<h3>San Juan</h3>")
+	point3.bindPopup("<h3>Bermuda</h3>").openPopup()
+}
+
+function unbindPopups() {
+	point1.unbindPopup()
+	point2.unbindPopup()
+	point3.unbindPopup()
+}
 
 const nextActions = [
 	() => { return () => { } },
-	() => { map.setZoom(5); return () => map.setZoom(0) },
-	() => { map.setView([39.73, 39.99]); return () => map.setView([0, 0]) },
+	() => { map.setZoom(4); return () => map.setZoom(0) },
+	() => { map.setView([26.79, -69.71]); return () => map.setView([0, 0]) },
 	() => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
 	() => { point1.addTo(map); return () => { map.removeLayer(point1) } },
-	() => { point2.addTo(map); return () => { map.removeLayer(point2) } },
+	() => { point2.addTo(map);point3.addTo(map); return () => { map.removeLayer(point2);map.removeLayer(point3)  } },
+	() => { bindPopups(); return () => { unbindPopups()  } },
+	() => { polygon.addTo(map);	polygon.bindTooltip("😈");	return () => { map.removeLayer(polygon) } },
 ]
 
 

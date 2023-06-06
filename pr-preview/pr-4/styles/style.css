@@ -150,7 +150,6 @@ content {
 
 .import-code>pre {
     padding: 1rem;
-    overflow: scroll;
 }
 
 .hyperleaflet-sample {
@@ -202,6 +201,8 @@ content {
     margin: 0;
     padding: 1rem;
     height: 100%;
+    max-height: 400px;
+    overflow: auto;
 }
 
 .hyperleaflet-sample__map {
@@ -265,6 +266,7 @@ footer {
     .fancy-text {
         font-size: 2rem;
     }
+
     .fancy-text__icon {
         width: 32px;
     }
