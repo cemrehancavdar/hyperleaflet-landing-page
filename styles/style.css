@@ -150,6 +150,7 @@ content {
 
 .import-code>pre {
     padding: 1rem;
+    overflow: auto;
 }
 
 .hyperleaflet-sample {
