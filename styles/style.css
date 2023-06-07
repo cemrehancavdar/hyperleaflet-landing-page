@@ -208,6 +208,8 @@ content {
 
 .shiki__extra-higlight {
     background-color: rgba(240, 248, 255, 0.2);
+    width: 100%;
+    display: inline-block;
 }
 
 .hyperleaflet-sample__map {
