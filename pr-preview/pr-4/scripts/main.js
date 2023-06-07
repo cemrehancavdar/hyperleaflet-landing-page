@@ -28,17 +28,7 @@ let currentStep = -1
 
 
 const hyperleafletCodes = [
-  `/*style your map container like: */
-<style>
-#map {
- width: 100%
- height: 500px
-}
-</style>
 
-<div id="map">
-</div>
-`,
   `<div id="map"
  data-zoom="4">
 </div>
@@ -166,7 +156,30 @@ function unbindPopups() {
 }
 
 const nextActions = [
-  () => { return () => { } },
+  {
+    codeText: `/*style your map container like: */
+<style>
+#map {
+  width: 100%
+  height: 500px
+}
+</style>
+
+<div id="map">
+</div>
+    `,
+    codeHighlightList: [8,9],
+    codeCall:  () => { return () => {} }
+  },
+  {
+    codeText:   `<div id="map"
+    data-zoom="4">
+   </div>
+   `,
+    codeHighlightList: [1],
+    codeCall: () => { map.setZoom(4); return () => map.setZoom(0) },
+
+  },
   () => { map.setZoom(4); return () => map.setZoom(0) },
   () => { map.setView([26.79, -69.71]); return () => map.setView([0, 0]) },
   () => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
@@ -180,20 +193,28 @@ const nextActions = [
 nextButton.addEventListener("click", nextStep)
 prevButton.addEventListener('click', prevStep)
 
+function extraHiglight(lines, highlightList) {
+  for (number of highlightList) {
+    lines[number].classList.add("shiki__extra-higlight")
+  }
+  
+}
+
 function nextStep() {
   if (currentStep >= nextActions.length ) {
     return;
   }
   shikiHighlighter.then(highlighter => {
 
-
     currentStep += 1
-    const code = highlighter.codeToHtml(hyperleafletCodes[currentStep], { lang: 'html' })
+    const code = highlighter.codeToHtml(nextActions[currentStep].codeText, { lang: 'html' })
     hyperleafletCodeContainer.innerHTML = code
-    const prevAction = nextActions[currentStep]()
+    const prevAction = nextActions[currentStep].codeCall()
     prevActions.unshift(prevAction)
 
     const shikiContainer = hyperleafletCodeContainer.querySelector(".shiki")
+    const lines = shikiContainer.querySelectorAll(".line")
+    extraHiglight(lines, nextActions[currentStep].codeHighlightList)
     shikiContainer.scrollTop = shikiContainer.scrollHeight
 
   })
@@ -205,7 +226,7 @@ function prevStep() {
   }
   shikiHighlighter.then(highlighter => {
     currentStep -= 1
-    const code = highlighter.codeToHtml(hyperleafletCodes[currentStep], { lang: 'html' })
+    const code = highlighter.codeToHtml(nextActions[currentStep].codeText, { lang: 'html' })
     hyperleafletCodeContainer.innerHTML = code
 
     prevActions.shift()()
