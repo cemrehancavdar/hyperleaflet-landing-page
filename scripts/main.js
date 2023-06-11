@@ -26,7 +26,6 @@ const shikiHighlighter = shiki.getHighlighter({ theme: 'nord', langs: ['html', '
 let currentStep = -1
 
 
-let prevActions = []
 const esriWorldImageryTile = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
@@ -49,9 +48,9 @@ function unbindPopups() {
   point3.unbindPopup()
 }
 
-const nextActions = [
+const actions = [
   {
-    codeText: `/*style your map container like: */
+    text: `/*style your map container like: */
 <style>
 #map {
   width: 100%
@@ -62,30 +61,31 @@ const nextActions = [
 <div id="map">
 </div>
     `,
-    codeHighlightList: [8, 9],
-    codeCall: () => { return () => { } }
+    extraHiglights: [8, 9],
+    next: () => { return },
+    previous: () => { }
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="4">
 </div>
    `,
-    codeHighlightList: [1],
-    codeCall: () => { map.setZoom(4); return () => map.setZoom(0) },
-
+    extraHiglights: [1],
+    next: () => map.setZoom(4),
+    previous: () => map.setZoom(0)
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="4"
  data-center="[26.79, -69.71]">
 </div>
    `,
-    codeHighlightList: [2],
-    codeCall: () => { map.setView([26.79, -69.71]); return () => map.setView([0, 0]) },
-
+    extraHiglights: [2],
+    next: () => map.setView([26.79, -69.71]),
+    previous: () => map.setView([0, 0]),
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="5"
  data-center="[26.79, -69.71]">
   <div
@@ -93,12 +93,12 @@ const nextActions = [
   </div>
 </div>
    `,
-    codeHighlightList: [3, 4, 5],
-    codeCall: () => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
-
+    extraHiglights: [3, 4, 5],
+    next: () => { layerControl.addTo(map); esriWorldImageryTile.addTo(map) },
+    previous: () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) }
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="5"
  data-center="[26.79, -69.71]">
   <div
@@ -112,11 +112,12 @@ const nextActions = [
    data-geometry="[25.775, -80.193]"></span>
 </div>
    `,
-    codeHighlightList: [7, 8, 9, 10, 11, 12],
-    codeCall: () => { point1.addTo(map); return () => { map.removeLayer(point1) } },
+    extraHiglights: [7, 8, 9, 10, 11, 12],
+    next: () => point1.addTo(map),
+    previous: () => map.removeLayer(point1)
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="5"
  data-center="[26.79, -69.71]">
   <div
@@ -136,11 +137,12 @@ data-hyperleaflet-source>
   data-geometry="[32.317, -64.737]"></span>
 </div>
 `,
-    codeHighlightList: [12, 13, 14, 15, 16, 17],
-    codeCall: () => { point2.addTo(map); point3.addTo(map); return () => { map.removeLayer(point2); map.removeLayer(point3) } },
+    extraHiglights: [12, 13, 14, 15, 16, 17],
+    next: () => { point2.addTo(map); point3.addTo(map) },
+    previous: () => { map.removeLayer(point2); map.removeLayer(point3) }
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="5"
  data-center="[26.79, -69.71]">
   <div
@@ -163,11 +165,12 @@ data-hyperleaflet-source>
   data-popup="<h3>Bermuda</h3>"></span>
 </div>
 `,
-    codeHighlightList: [12, 16, 20],
-    codeCall: () => { bindPopups(); return () => { unbindPopups() } },
+    extraHiglights: [12, 16, 20],
+    next: () => bindPopups(),
+    previous: () => unbindPopups()
   },
   {
-    codeText: `<div id="map"
+    text: `<div id="map"
  data-zoom="5"
  data-center="[26.79, -69.71]">
   <div
@@ -196,59 +199,62 @@ data-hyperleaflet-source>
    ></span>
 </div>
 `,
-    codeHighlightList: [21, 22, 23, 24, 25],
-    codeCall: () => { polygon.addTo(map); unbindPopups(); map.closePopup(); polygon.bindTooltip("😈"); return () => { map.removeLayer(polygon) } },
+    extraHiglights: [21, 22, 23, 24, 25],
+    next: () => { polygon.addTo(map); unbindPopups(); map.closePopup(); polygon.bindTooltip("😈") },
+    previous: () => map.removeLayer(polygon)
   },
 ]
 
 
-nextButton.addEventListener("click", nextStep)
-prevButton.addEventListener('click', prevStep)
+nextButton.addEventListener("click", () => step("next"))
+prevButton.addEventListener('click', () => step("previous"))
 
 function extraHiglight(lines, highlightList) {
   for (number of highlightList) {
     lines[number].classList.add("shiki__extra-higlight")
   }
-
 }
 
-function nextStep() {
-  if (currentStep >= nextActions.length) {
-    return;
+function higlightExtraLines(container) {
+  const lines = container.querySelectorAll(".line")
+  extraHiglight(lines, actions[currentStep].extraHiglights)
+}
+
+function changeStepButtonsState() {
+  console.log(currentStep)
+  if (currentStep === 0) {
+    prevButton.disabled = true
   }
+  else if (currentStep === actions.length - 1) {
+    nextButton.disabled = true
+  }
+  else {
+    prevButton.disabled = false
+    nextButton.disabled = false
+  }
+}
+
+
+function step(to) {
+  const stepDirection = to === "next" ? 1 : -1
+
   shikiHighlighter.then(highlighter => {
-
-    currentStep += 1
-    const code = highlighter.codeToHtml(nextActions[currentStep].codeText, { lang: 'html' })
+    currentStep += stepDirection
+    const code = highlighter.codeToHtml(actions[currentStep].text, { lang: 'html' })
     hyperleafletCodeContainer.innerHTML = code
-    const prevAction = nextActions[currentStep].codeCall()
-    prevActions.unshift(prevAction)
 
+    actions[currentStep]["next"]()
     const shikiContainer = hyperleafletCodeContainer.querySelector(".shiki")
-    const lines = shikiContainer.querySelectorAll(".line")
-    extraHiglight(lines, nextActions[currentStep].codeHighlightList)
+    higlightExtraLines(shikiContainer)
     shikiContainer.scrollTop = shikiContainer.scrollHeight
-
+    changeStepButtonsState()
   })
 }
 
-function prevStep() {
-  if (currentStep <= 0) {
-    return;
-  }
-  shikiHighlighter.then(highlighter => {
-    currentStep -= 1
-    const code = highlighter.codeToHtml(nextActions[currentStep].codeText, { lang: 'html' })
-    hyperleafletCodeContainer.innerHTML = code
-
-    prevActions.shift()()
-
-  })
-}
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  nextStep()
+  step("next")
 
   shikiHighlighter.then(highlighter => {
     const code = highlighter.codeToHtml(importCode, { lang: 'html' })

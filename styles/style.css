@@ -180,15 +180,19 @@ content {
 
     border-radius: 3px;
     padding: 5px;
-    background-color: #555e71;
+    background-color: rgb(85, 94, 113);
     margin-block: 3px;
 
 }
+
 
 .step-button:hover {
     background-color: #2e3440ff;
 }
 
+.step-button:disabled, .step-button:hover:disabled  {
+    background-color: rgba(85, 94, 113, 0.5);
+}
 
 
 
