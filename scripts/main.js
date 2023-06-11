@@ -26,112 +26,6 @@ const shikiHighlighter = shiki.getHighlighter({ theme: 'nord', langs: ['html', '
 let currentStep = -1
 
 
-
-const hyperleafletCodes = [
-
-  `<div id="map"
- data-zoom="4">
-</div>
-`,
-  `<div id="map"
- data-zoom="4"
- data-center="[26.79, -69.71]">
-</div>
-`,
-  `<div id="map"
- data-zoom="5"
- data-center="[26.79, -69.71]">
-  <div
-   data-tile="EsriWorldImagery">
-  </div>
-</div>
-`,
-  `<div id="map"
- data-zoom="5"
- data-center="[26.79, -69.71]">
-  <div
-   data-tile="EsriWorldImagery">
-  </div>
-</div>
-<div
-data-hyperleaflet-source> 
- <span data-id="1"
-  data-geometry-type="Point"
-  data-geometry="[25.775, -80.193]"></span>
-</div>
-`,
-  `<div id="map"
- data-zoom="5"
- data-center="[26.79, -69.71]">
-  <div
-   data-tile="EsriWorldImagery">
-  </div>
-</div>
-<div
-data-hyperleaflet-source> 
- <span data-id="1"
-  data-geometry-type="Point"
-  data-geometry="[25.775, -80.193]"></span>
- <span data-id="2"
-  data-geometry-type="Point"
-  data-geometry="[18.465, -66.117]"></span>
-  <span data-id="3"
-  data-geometry-type="Point"
-  data-geometry="[32.317, -64.737]"></span>
-</div>
-`,
-  `<div id="map"
- data-zoom="5"
- data-center="[26.79, -69.71]">
-  <div
-   data-tile="EsriWorldImagery">
-  </div>
-</div>
-<div
-data-hyperleaflet-source> 
- <span data-id="1"
-  data-geometry-type="Point"
-  data-geometry="[25.775, -80.193]"
-  data-popup="<h3>Miami</h3>"></span>
- <span data-id="2"
-  data-geometry-type="Point"
-  data-geometry="[18.465, -66.117]"
-  data-popup="<h3>San Juan</h3>"></span>
-  <span data-id="3"
-  data-geometry-type="Point"
-  data-geometry="[32.317, -64.737]"  
-  data-popup="<h3>Bermuda</h3>"></span>
-</div>
-`,
-  `<div id="map"
- data-zoom="5"
- data-center="[26.79, -69.71]">
-  <div
-   data-tile="EsriWorldImagery">
-  </div>
-</div>
-<div
-data-hyperleaflet-source> 
- <span data-id="1"
-  data-geometry-type="Point"
-  data-geometry="[25.775, -80.193]"
-  data-popup="<h3>Miami</h3>"></span>
- <span data-id="2"
-  data-geometry-type="Point"
-  data-geometry="[18.465, -66.117]"
-  data-popup="<h3>San Juan</h3>"></span>
- <span data-id="3"
-  data-geometry-type="Point"
-  data-geometry="[32.317, -64.737]"  
-  data-popup="<h3>Bermuda</h3>"></span>
- <span data-id="4"
-  data-geometry-type="Polygon"
-  data-geometry="[[[25.775, -80.193], [18.465, -66.117],
-   [32.317, -64.737], [25.775, -80.193]]]"></span>
-</div>
-`
-]
-
 let prevActions = []
 const esriWorldImageryTile = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -168,25 +62,143 @@ const nextActions = [
 <div id="map">
 </div>
     `,
-    codeHighlightList: [8,9],
-    codeCall:  () => { return () => {} }
+    codeHighlightList: [8, 9],
+    codeCall: () => { return () => { } }
   },
   {
-    codeText:   `<div id="map"
-    data-zoom="4">
-   </div>
+    codeText: `<div id="map"
+ data-zoom="4">
+</div>
    `,
     codeHighlightList: [1],
     codeCall: () => { map.setZoom(4); return () => map.setZoom(0) },
 
   },
-  () => { map.setZoom(4); return () => map.setZoom(0) },
-  () => { map.setView([26.79, -69.71]); return () => map.setView([0, 0]) },
-  () => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
-  () => { point1.addTo(map); return () => { map.removeLayer(point1) } },
-  () => { point2.addTo(map); point3.addTo(map); return () => { map.removeLayer(point2); map.removeLayer(point3) } },
-  () => { bindPopups(); return () => { unbindPopups() } },
-  () => { polygon.addTo(map);unbindPopups();  map.closePopup(); polygon.bindTooltip("😈"); return () => { map.removeLayer(polygon) } },
+  {
+    codeText: `<div id="map"
+ data-zoom="4"
+ data-center="[26.79, -69.71]">
+</div>
+   `,
+    codeHighlightList: [2],
+    codeCall: () => { map.setView([26.79, -69.71]); return () => map.setView([0, 0]) },
+
+  },
+  {
+    codeText: `<div id="map"
+ data-zoom="5"
+ data-center="[26.79, -69.71]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+   `,
+    codeHighlightList: [3, 4, 5],
+    codeCall: () => { layerControl.addTo(map); esriWorldImageryTile.addTo(map); return () => { map.removeControl(layerControl); map.removeLayer(esriWorldImageryTile) } },
+
+  },
+  {
+    codeText: `<div id="map"
+ data-zoom="5"
+ data-center="[26.79, -69.71]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+ data-hyperleaflet-source> 
+  <span data-id="1"
+   data-geometry-type="Point"
+   data-geometry="[25.775, -80.193]"></span>
+</div>
+   `,
+    codeHighlightList: [7, 8, 9, 10, 11, 12],
+    codeCall: () => { point1.addTo(map); return () => { map.removeLayer(point1) } },
+  },
+  {
+    codeText: `<div id="map"
+ data-zoom="5"
+ data-center="[26.79, -69.71]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[25.775, -80.193]"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[18.465, -66.117]"></span>
+  <span data-id="3"
+  data-geometry-type="Point"
+  data-geometry="[32.317, -64.737]"></span>
+</div>
+`,
+    codeHighlightList: [12, 13, 14, 15, 16, 17],
+    codeCall: () => { point2.addTo(map); point3.addTo(map); return () => { map.removeLayer(point2); map.removeLayer(point3) } },
+  },
+  {
+    codeText: `<div id="map"
+ data-zoom="5"
+ data-center="[26.79, -69.71]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[25.775, -80.193]"
+  data-popup="<h3>Miami</h3>"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[18.465, -66.117]"
+  data-popup="<h3>San Juan</h3>"></span>
+  <span data-id="3"
+  data-geometry-type="Point"
+  data-geometry="[32.317, -64.737]"  
+  data-popup="<h3>Bermuda</h3>"></span>
+</div>
+`,
+    codeHighlightList: [12, 16, 20],
+    codeCall: () => { bindPopups(); return () => { unbindPopups() } },
+  },
+  {
+    codeText: `<div id="map"
+ data-zoom="5"
+ data-center="[26.79, -69.71]">
+  <div
+   data-tile="EsriWorldImagery">
+  </div>
+</div>
+<div
+data-hyperleaflet-source> 
+ <span data-id="1"
+  data-geometry-type="Point"
+  data-geometry="[25.775, -80.193]"
+  data-popup="<h3>Miami</h3>"></span>
+ <span data-id="2"
+  data-geometry-type="Point"
+  data-geometry="[18.465, -66.117]"
+  data-popup="<h3>San Juan</h3>"></span>
+ <span data-id="3"
+  data-geometry-type="Point"
+  data-geometry="[32.317, -64.737]"  
+  data-popup="<h3>Bermuda</h3>"></span>
+ <span data-id="4"
+  data-geometry-type="Polygon"
+  data-geometry="[[[25.775, -80.193], [18.465, -66.117],
+   [32.317, -64.737], [25.775, -80.193]]]"
+   data-tooltip="😈
+   ></span>
+</div>
+`,
+    codeHighlightList: [21, 22, 23, 24, 25],
+    codeCall: () => { polygon.addTo(map); unbindPopups(); map.closePopup(); polygon.bindTooltip("😈"); return () => { map.removeLayer(polygon) } },
+  },
 ]
 
 
@@ -197,11 +209,11 @@ function extraHiglight(lines, highlightList) {
   for (number of highlightList) {
     lines[number].classList.add("shiki__extra-higlight")
   }
-  
+
 }
 
 function nextStep() {
-  if (currentStep >= nextActions.length ) {
+  if (currentStep >= nextActions.length) {
     return;
   }
   shikiHighlighter.then(highlighter => {
