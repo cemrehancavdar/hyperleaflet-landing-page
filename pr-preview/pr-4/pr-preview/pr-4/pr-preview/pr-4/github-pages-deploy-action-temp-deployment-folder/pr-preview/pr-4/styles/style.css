@@ -205,6 +205,10 @@ content {
     overflow: auto;
 }
 
+.shiki__extra-higlight {
+    background-color: rgba(240, 248, 255, 0.2);
+}
+
 .hyperleaflet-sample__map {
     flex: 1;
     height: 400px;
