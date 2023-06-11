@@ -13,7 +13,7 @@ code * {
     font-family: 'Source Code Pro', sans-serif;
     font-weight: 400;
     font-size: 13.6px;
-    
+
 }
 
 .line {
@@ -29,7 +29,7 @@ html {
 }
 
 body {
-    background-color: #ebeceb;
+    background-color: rgb(247, 249, 253);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -103,17 +103,25 @@ content {
 }
 
 .description {
-    font-size: 24px;
+    text-align: center;
     line-height: 2.5rem;
 }
+
 .description__bold {
+    font-size: 2.6rem;
+    line-height: 3.25rem;
+    color: rgb(11, 20, 35);
     font-weight: 700;
 }
 
 .description__sentences {
-    font-size: 20px;
+    font-size: 1.7rem;
+    line-height: 2.25rem;
+    color: rgb(94, 104, 120);
+    font-weight: 700;
 }
-.description__sentences > a {
+
+.description__sentences>a {
     color: #375b5c;
 }
 
@@ -123,20 +131,26 @@ content {
 }
 
 .fancy-text {
-    font-family: 'DT Getai Grotesk Display', sans-serif; 
-    font-size: 1rem;
     text-align: center;
     letter-spacing: 0.2rem;
     padding-block-end: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 3rem;
+    color: rgb(11, 20, 35);
+    font-weight: 900;
+}
+
+.fancy-text__icon {
+    width: 64px;
+    aspect-ratio: 1;
 }
 
 
 .import-code>pre {
     padding: 1rem;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .hyperleaflet-sample {
@@ -166,32 +180,20 @@ content {
 
     border-radius: 3px;
     padding: 5px;
-    background-color: #555e71;
+    background-color: rgb(85, 94, 113);
     margin-block: 3px;
 
 }
+
 
 .step-button:hover {
     background-color: #2e3440ff;
 }
 
-@media screen and (max-width: 768px) {
-    html {
-        font-size: 12px
-    }
-    
-    .hyperleaflet-sample__screen {
-        flex-direction: column;
-    }
-
-    .hyperleaflet-sample__code {
-        order: 2
-    }
-
-    hyperleaflet-sample__map {
-        order: 1
-    }
+.step-button:disabled, .step-button:hover:disabled  {
+    background-color: rgba(85, 94, 113, 0.5);
 }
+
 
 
 
@@ -204,6 +206,14 @@ content {
     margin: 0;
     padding: 1rem;
     height: 100%;
+    max-height: 400px;
+    overflow: auto;
+}
+
+.shiki__extra-higlight {
+    background-color: rgba(240, 248, 255, 0.2);
+    width: 100%;
+    display: inline-block;
 }
 
 .hyperleaflet-sample__map {
@@ -252,4 +262,31 @@ footer {
     transform: scale(1.02);
 
 
+}
+
+
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 12px
+    }
+
+    .hyperleaflet-sample__screen {
+        flex-direction: column;
+    }
+
+    .fancy-text {
+        font-size: 2rem;
+    }
+
+    .fancy-text__icon {
+        width: 32px;
+    }
+
+    .hyperleaflet-sample__code {
+        order: 2
+    }
+
+    hyperleaflet-sample__map {
+        order: 1
+    }
 }
