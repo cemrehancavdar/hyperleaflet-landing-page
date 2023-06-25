@@ -14,7 +14,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const importCode =
   `<!-- import leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet/dist/leaflet.js">
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <!-- import hyperleaflet -->
 <script defer src="https://www.unpkg.com/hyperleaflet"></script>
