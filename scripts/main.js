@@ -53,8 +53,8 @@ const actions = [
     text: `/*style your map container like: */
 <style>
 #map {
-  width: 100%
-  height: 500px
+  width: 100%;
+  height: 500px;
 }
 </style>
 
